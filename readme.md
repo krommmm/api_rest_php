@@ -15,7 +15,7 @@ Configurer le .env
 Créer une BDD.
 ## Creation tables
 ### items
-uuid varchar(250) primarykey
+uuid varchar(250) primarykey<br/>
 posterid varchar(250)
 id int index auto_i
 name varchar(250)
