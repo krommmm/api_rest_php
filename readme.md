@@ -16,57 +16,57 @@ Créer une BDD.
 ## Creation tables
 ### items
 uuid varchar(250) primarykey<br/>
-posterid varchar(250)
-id int index auto_i
-name varchar(250)
-price id
-description text
-image varchar(250)
-artiste varchar(100)
-epoque varchar(100)
-style varchar(100)
-etat varchar(100)
-matiere varchar(100)
-longeur int
-largeur int
-diametre int
-hauteur int
-profondeur int
-img_secondaire_1 varchar(250)
-img_secondaire_2 varchar(250)
-img_secondaire_3 varchar(250)
-img_secondaire_4 varchar(250)
-img_secondaire_5 varchar(250)
-img_secondaire_6 varchar(250)
-img_secondaire_7 varchar(250)
-img_secondaire_8 varchar(250)
-img_secondaire_9 varchar(250)
-img_secondaire_10 varchar(250)
+posterid varchar(250)<br/>
+id int index auto_i<br/>
+name varchar(250)<br/>
+price id<br/>
+description text<br/>
+image varchar(250)<br/>
+artiste varchar(100)<br/>
+epoque varchar(100)<br/>
+style varchar(100)<br/>
+etat varchar(100)<br/>
+matiere varchar(100)<br/>
+longeur int<br/>
+largeur int<br/>
+diametre int<br/>
+hauteur int<br/>
+profondeur int<br/>
+img_secondaire_1 varchar(250)<br/>
+img_secondaire_2 varchar(250)<br/>
+img_secondaire_3 varchar(250)<br/>
+img_secondaire_4 varchar(250)<br/>
+img_secondaire_5 varchar(250)<br/>
+img_secondaire_6 varchar(250)<br/>
+img_secondaire_7 varchar(250)<br/>
+img_secondaire_8 varchar(250)<br/>
+img_secondaire_9 varchar(250)<br/>
+img_secondaire_10 varchar(250)<br/>
 
 ### users
-uuid varchar(250) primarykey
-id int index auto_i
-name varchar(250)
-email varchar(250)
-password text
-avatar varchar(250)
-nom_gallerie varchar(250)
-site_internet_prive varchar(250)
-adresse varchar(250)
-tel_fixe varchar(250)
-tel_mobile varchar(250)
+uuid varchar(250) primarykey<br/>
+id int index auto_i<br/>
+name varchar(250)<br/>
+email varchar(250)<br/>
+password text<br/>
+avatar varchar(250)<br/>
+nom_gallerie varchar(250)<br/>
+site_internet_prive varchar(250)<br/>
+adresse varchar(250)<br/>
+tel_fixe varchar(250)<br/>
+tel_mobile varchar(250)<br/>
 
 ### my_follow
-id int primaryKey auto_i
-followed_user_id varchar(250)
-follower_user_id varchar(250)
-+ vue relationnel onDelete(Cascade) on update(restrict) colonne(follower_user_id) table(users) colonne(uuid)
+id int primaryKey auto_i<br/>
+followed_user_id varchar(250)<br/>
+follower_user_id varchar(250)<br/>
++ vue relationnel onDelete(Cascade) on update(restrict) colonne<br/>(follower_user_id) table(users) colonne(uuid)<br/>
 
 ### my_selection
-id int primaryKey auto_i
-item_id varchar(250) index
-user_id varchar(250) index
-+ vue relationnel onDelete(cascade) colonne(item_id) table(items) colonne(uuid)
+id int primaryKey auto_i<br/>
+item_id varchar(250) index<br/>
+user_id varchar(250) index<br/>
++ vue relationnel onDelete(cascade) colonne(item_id) table(items) colonne(uuid)<br/>
 
 
 ## Documentation
