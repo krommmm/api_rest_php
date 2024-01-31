@@ -1,0 +1,94 @@
+body {
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+}
+
+header {
+	background-color: #3498db;
+	color: white;
+	padding: 15px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+}
+h1 {
+	font-size: 30px;
+}
+
+.blue {
+	color: blue;
+}
+
+th {
+	border: 1px solid black;
+	padding: 10px;
+	margin: 0px;
+	width: 300px;
+}
+td {
+	border: 1px solid black;
+	padding: 10px;
+	margin: 0px;
+	width: 300px;
+	/* border-collapse:collapse */
+}
+
+.user {
+	background-color: pink;
+	color: white;
+}
+
+.item {
+	background-color: rgb(112, 181, 228);
+	color: white;
+}
+
+.pink_foncé {
+	background-color: rgb(245, 109, 131);
+	color: white;
+}
+.pink_foncé_plus {
+	background-color: rgb(228, 41, 72);
+	color: white;
+}
+.host {
+	background-color: grey;
+	color: white;
+}
+.profil {
+	background-color: rgb(86, 199, 86);
+	color: white;
+}
+.follow{
+	background-color: rgb(50, 240, 183);
+	color: white;
+}
+.items{
+	background-color: rgb(240, 50, 50);
+	color: white;
+}
+.email{
+	background-color: rgb(148, 118, 233);
+	color: white;
+}
+.list{
+	background-color: rgb(212, 95, 177);
+	color: white;
+}
+.userId{
+	background-color: rgb(77, 233, 124);
+	color: white;
+}
+.itemId{
+	background-color: rgb(143, 27, 27);
+	color: white;
+}
+.modify{
+	background-color: rgb(65, 76, 126);
+	color: white;
+}
+.delete{
+	background-color: rgb(150, 95, 50);
+	color: white;
+}

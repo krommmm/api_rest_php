@@ -1,0 +1,13 @@
+RewriteEngine On
+
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?demande=$1 [QSA,L]
+
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Désactiver l'indexation des répertoires (pour qu'on ne puisse pas se balader dedans à la souris sur le nav)
+Options -Indexes
