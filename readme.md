@@ -8,15 +8,15 @@
 
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 
-## Securité:
+Sécurité :
 
-Protection contre injections SQL: validation des entrés(bindParam, PDO), requêtes préparés. <br/>
-Protection contre attaques XSS : filtrage sorties(fonctions htmlspecialchars)<br/>
-Authentification et authorisation : jwt, hash Bcrypt, validateEmail, comparaison avec bdd<br/>
-Protection données sensibles : fichier .env avec var d'environnement pour la connexion et les clefs secrètes<br/>
-Protection contre force brute : Blocage de l'ip pour 1h si 3 requêtes d'authentification échouent.
-CORS
-Gestions de toutes les méthodes
+Protection contre les injections SQL : validation des entrées (bindParam, PDO), requêtes préparées. <br/>
+Protection contre les attaques XSS : filtrage des sorties (fonctions htmlspecialchars)<br/>
+Authentification et autorisation : JWT, hash Bcrypt, validation d'e-mail, comparaison avec la base de données<br/>
+Protection des données sensibles : fichier .env avec des variables d'environnement pour la connexion et les clés secrètes<br/>
+Protection contre la force brute : Blocage de l'adresse IP pendant 1 heure si 3 tentatives d'authentification échouent.<br/>
+CORS<br/>
+Gestion de toutes les méthodes<br/>
 
 
 ## Description:
