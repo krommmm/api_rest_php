@@ -102,29 +102,18 @@ function attemptRequest()
 {
     $ip = $_SERVER['REMOTE_ADDR'];
     $fiche = checkIfAspirantExists($ip);
-    if (!$fiche) { // cet utilisateur n'avait pas encore essayé de se co
-        // donc creation fiche
-        createFicheAspirant($ip);
-    } else {
-        return $fiche;
-    }
+    return $fiche;
 }
 function createFicheAspirant($ip)
 {
-
-    $dateActuelle = time();
-
-
-
-    $nbEssais = 0;
+    $nbEssais = 1;
+    $isBanned = "false";
     $pdo = getConnexion();
-    $req = 'INSERT INTO fiche_aspirant(currentTime,timeLeft,ip_adresse,nb_essais) VALUES(:currentTime,:timeLeft,:ip_adresse,:nb_essais) ';
+    $req = 'INSERT INTO fiche_aspirant(isBanned,ip_adresse,nb_essais) VALUES(:isBanned,:ip_adresse,:nb_essais) ';
     $stmt = $pdo->prepare($req);
     $stmt->bindParam('ip_adresse', $ip, PDO::PARAM_INT);
     $stmt->bindParam('nb_essais', $nbEssais, PDO::PARAM_INT);
-    $stmt->bindParam('currentTime', $dateActuelle, PDO::PARAM_INT);
-    $stmt->bindParam('timeLeft', $dateActuelle, PDO::PARAM_INT);
-
+    $stmt->bindParam('isBanned', $isBanned, PDO::PARAM_STR);
     $stmt->execute();
 }
 function checkIfAspirantExists($ip)
@@ -139,67 +128,70 @@ function checkIfAspirantExists($ip)
 }
 function addOneTry($fiche)
 {
-    // $fiche = attemptRequest();
     $nb_essais = $fiche['nb_essais'] + 1;
-    if ($nb_essais >= 3) {
-        //block en ajoutant 1h au timeLeft
-        // ++ checker au début de chaque vérification le time 
-        $timeStamp = time();
-        $date = new DateTime();
-        $date->settimeStamp($timeStamp);
-        $date->add(new DateInterval('PT1H'));
-        $nouveau_timeStamp = $date->getTimeStamp();
-        $fiche['timeLeft'] = $nouveau_timeStamp;
-
-
-        // $timeLeft = $fiche['timeLeft'] + 1;
+    if ($nb_essais > 2) {
         $ip = $_SERVER['REMOTE_ADDR'];
+        $isBanned = "true";
+        // MAJ FICHE
         $pdo = getConnexion();
-        $req = 'UPDATE fiche_aspirant SET nb_essais = :nb_essais, timeLeft = :timeLeft WHERE ip_adresse = :ip_adresse';
+        $req = 'UPDATE fiche_aspirant SET isBanned = :isBanned,nb_essais = :nb_essais WHERE ip_adresse = :ip_adresse';
         $stmt = $pdo->prepare($req);
-        $stmt->bindParam('timeLeft', $fiche['timeLeft'], PDO::PARAM_INT);
         $stmt->bindParam('ip_adresse', $ip, PDO::PARAM_INT);
         $stmt->bindParam('nb_essais', $nb_essais, PDO::PARAM_INT);
+        $stmt->bindParam('isBanned', $isBanned, PDO::PARAM_STR);
         $stmt->execute();
-    } else {
-        $dateActuelle = time();
-        $fiche['currentTime'] = $dateActuelle;
-        $fiche['timeLeft'] = $dateActuelle;
 
+          // suppression de la table au bout de 2h
+          set_time_limit(0);
+          // SLEEP = SEC (PAS MILLISECONDES)
+          // Définir le temps d'attente en secondes (1 heure dans cet exemple)
+          $temps_attente = 3600;  //3600
+
+          // Obtenir le temps actuel
+          $temps_debut = time();
+
+          // Boucle tant que le temps écoulé est inférieur au temps d'attente
+          while (time() - $temps_debut < $temps_attente) {
+              // Permet au serveur de faire d'autres tâches pendant l'attente
+              // Vous pouvez ajouter d'autres traitements ici si nécessaire
+
+              usleep(100000); // Ajoute une petite pause pour réduire la charge CPU  
+          }
+          deleteTable_ficheAspirant($ip);
+
+
+    } else {
         $ip = $_SERVER['REMOTE_ADDR'];
         $pdo = getConnexion();
-        $req = 'UPDATE fiche_aspirant SET currentTime = :currentTime,timeLeft = :timeLeft,nb_essais = :nb_essais WHERE ip_adresse = :ip_adresse';
+        $req = 'UPDATE fiche_aspirant SET nb_essais = :nb_essais WHERE ip_adresse = :ip_adresse';
         $stmt = $pdo->prepare($req);
         $stmt->bindParam('nb_essais', $nb_essais, PDO::PARAM_INT);
         $stmt->bindParam('ip_adresse', $ip, PDO::PARAM_INT);
-        $stmt->bindParam('currentTime', $fiche['currentTime'], PDO::PARAM_INT);
-        $stmt->bindParam('timeLeft', $fiche['timeLeft'], PDO::PARAM_INT);
         $stmt->execute();
     }
 
 }
 
+function deleteTable_ficheAspirant($ip)
+{
+    $pdo = getConnexion();
+    $req = 'DELETE FROM fiche_aspirant WHERE ip_adresse = :ip';
+    $stmt = $pdo->prepare($req);
+    $stmt->bindValue('ip', $ip, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 function isForbidden()
 {
     $ip = $_SERVER['REMOTE_ADDR'];
-    $fiche = attemptRequest();
-    if ($fiche) {
-        $dateActuelle = time();
-        //MAJ DE LA DATE ACTUELLE
-        $fiche['currentTime'] = $dateActuelle;
-        $pdo = getConnexion();
-        $req = 'UPDATE fiche_aspirant SET currentTime = :currentTime,nb_essais = :nb_essais WHERE ip_adresse = :ip_adresse';
-        $stmt = $pdo->prepare($req);
-        $stmt->bindParam('nb_essais', $nb_essais, PDO::PARAM_INT);
-        $stmt->bindParam('ip_adresse', $ip, PDO::PARAM_INT);
-        $stmt->bindParam('currentTime', $fiche['currentTime'], PDO::PARAM_INT);
-        $stmt->execute();
+    $fiche = checkIfAspirantExists($ip);
+    if (!empty($fiche)) {
 
-        if ($fiche['timeLeft'] > $dateActuelle) {
-            
-            http_response_code(200);
-            echo json_encode("vous plus le droit de requêter", JSON_UNESCAPED_UNICODE);
-            exit();
+        if ($fiche['isBanned'] === "true") {
+
+          http_response_code(200);
+          echo json_encode("Vous devez attenre 1h avant de pouvoir vous identifier de nouveau",JSON_UNESCAPED_UNICODE);
+         exit();
         }
     }
 }

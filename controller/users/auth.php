@@ -133,11 +133,13 @@ function login()
 
             if (!password_verify($password, $userByMail['password'])) {
                 // RECUPERATION FICHE IP du postulant
-                $fiche = attemptRequest();
-                
-                
-                // SI sa request echoue, on ajoute une tentative
-                addOneTry($fiche);
+                $fiche = attemptRequest(); // return fiche ou null
+                if(empty($fiche)){
+                $ip = $_SERVER['REMOTE_ADDR'];
+                createFicheAspirant($ip);
+                }else{
+                    addOneTry($fiche);
+                }
                 http_response_code(401);
                 sendJSON(array('error' => "Paire login/mdp invalide"));
                 exit();

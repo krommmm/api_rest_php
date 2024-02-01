@@ -8,7 +8,7 @@
 
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 
-Sécurité :
+## Sécurité :
 
 Protection contre les injections SQL : validation des entrées (bindParam, PDO), requêtes préparées. <br/>
 Protection contre les attaques XSS : filtrage des sorties (fonctions htmlspecialchars)<br/>
