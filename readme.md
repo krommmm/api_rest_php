@@ -77,6 +77,13 @@ item_id varchar(250) index<br/>
 user_id varchar(250) index<br/>
 + vue relationnel onDelete(cascade) colonne(item_id) table(items) colonne(uuid)<br/>
 
+### fiche_aspirant
+id int primaryKey a_i<br/>
+ip_adresse int<br/>
+nb_essais int<br/>
+currentTime int<br/>
+timeLeft int<br/>
+
 
 ## Documentation
 `localhost/docs`
