@@ -228,6 +228,7 @@ function items()
                         // Utilisez unset pour supprimer la clé "posterId"
                         unset($produit['posterId']);
                     }
+                 
                     http_response_code(200);
                     sendJSON($items);
                 } catch (Exception $e) {

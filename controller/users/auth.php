@@ -2,12 +2,12 @@
 require_once('./model/item.php');
 require_once('./model/utils.php');
 require_once './model/user.php';
-require_once './vendor/autoload.php'; 
+require_once './vendor/autoload.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../'); 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 
@@ -132,6 +132,12 @@ function login()
             $userByMail = $stmtUserFromMail->fetch();
 
             if (!password_verify($password, $userByMail['password'])) {
+                // RECUPERATION FICHE IP du postulant
+                $fiche = attemptRequest();
+                
+                
+                // SI sa request echoue, on ajoute une tentative
+                addOneTry($fiche);
                 http_response_code(401);
                 sendJSON(array('error' => "Paire login/mdp invalide"));
                 exit();
@@ -149,6 +155,7 @@ function login()
                         'exp' => $expirationTime
                     ];
 
+
                     $jwt = JWT::encode($payload, $key, 'HS256');
                     // réponse après création jwt
                     $answer = array("message" => "utilisateur connecté", "token" => $jwt);
@@ -156,6 +163,7 @@ function login()
                     sendJSON(array("success" => $answer));
                     exit();
                 } catch (Exception $e) {
+
                     http_response_code(401);
                     sendJSON(array('error' => $e->getMessage()));
                 }

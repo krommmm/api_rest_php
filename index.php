@@ -11,6 +11,7 @@ require_once './model/user.php';
 require_once './controller/documentation/docs.php';
 
 applyCORS(); 
+isForbidden();
 try {
 
     if (!empty($_GET['demande'])) {
